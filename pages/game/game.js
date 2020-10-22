@@ -9,6 +9,7 @@ Page({
         gaming: false, //判断是否在游戏中
         moneyClass: '', // 用于添加金额的动画类
         chipsClass: '', // 用于添加闪烁动画类
+        symbol: 0,
         finger: { // 用于移动定位
             Y: 0,
             X: 0
@@ -19,11 +20,60 @@ Page({
     getUserInfo: function() {
       return wx.getStorageSync('rankUserInfo');
     },
-    putChip: function(event) {
-        var chipsSum = Number(this.data.bet) + Number(event.currentTarget.dataset.amount);
+     //判断加注还是减注
+    setSymbol:function(event){
+        var that=this;
+        var sym= Number(event.currentTarget.dataset.amount)
         this.setData({
-            bet: chipsSum
+            symbol: sym
         });
+    },
+    putChip: function(event) {
+        var that=this;
+        if(this.data.symbol==1){
+            var chipsSum = Number(this.data.bet) + Number(event.currentTarget.dataset.amount);
+            this.setData({
+                bet: chipsSum
+            });
+        }
+        else if(this.data.symbol==2){
+            var chipsSum = Number(this.data.bet) - Number(event.currentTarget.dataset.amount);
+            if(chipsSum<0){
+            // 附加闪烁动画
+            this.setData({
+            chipsClass: "blink-smooth"
+          });
+             // 清除闪烁动画
+          setTimeout(function() {
+           this.setData({
+            chipsClass: '',
+            gaming: false
+            });
+            }, 2500);
+           return
+            } 
+            else{
+                this.setData({
+                    bet: chipsSum
+                });
+            }
+        }
+        else{
+             // 未选择符号 
+            // 附加闪烁动画
+            this.setData({
+                chipsClass: "blink-smooth"
+            });
+            // 清除闪烁动画
+            setTimeout(function() {
+                this.setData({
+                    chipsClass: '',
+                    gaming: false
+                });
+            }, 2500);
+            return
+        }
+       
     },
     setUserScore: function(score) {
         var that = this;

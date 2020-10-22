@@ -1,3 +1,4 @@
+
 <template name="first">
     <view class="dice-box first">
         <span class="dice-point"></span>
@@ -72,6 +73,10 @@
             <template is="{{item}}" />
         </block>
     </view>
+    <view class="column">
+                <image mode='aspectFit' data-amount="1" bindtap="setSymbol" class="w120 h120 mb10" src="/images/加.png"></image>
+                <image mode='aspectFit' data-amount="2" bindtap="setSymbol" class="w120 h120" src="/images/减.png"></image>
+            </view>
     <view class="chip-body">
         <view class="chips">
             <view class="column">
@@ -89,6 +94,9 @@
             <view hidden="{{ showBet }}" class="put-chips-amount {{chipsClass}}">{{ bet > 0? bet:'下注金额' }}</view>
         </view>
     </view>
+
+   
+
     <view class="game-operate">
         <button data-type="big" bindtap="changeDice">
             <span>大</span>
